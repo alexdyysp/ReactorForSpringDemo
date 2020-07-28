@@ -1,5 +1,26 @@
 # Reactor For Spring 
 
+## Basic Data
+
+```sqlite
+cqlsh:blogs>describe blogpost;
+CREATE TABLE blogs.blogpost (
+    id uuid PRIMARY KEY,
+    author text,
+    body text,
+    title text
+)
+
+cqlsh:blogs> select * from blogpost;
+
+ id                                   | author  | body                        | title
+--------------------------------------+---------+-----------------------------+-----------------
+ ebc86ab0-c9cf-417e-8d69-c4157abe9422 |     dyy |         second test for api | reactortestPost
+ a7eb7a00-d080-11ea-a4e0-ef9074370d3e |     dyy | first test blog can be read | first test blog
+ 9350f7f2-0df5-4415-882c-2bfbb87c9b7c | Author2 |       Other body for update |           Title
+ bd3ae648-41ab-42c8-bc9e-4dcd9737f698 |  Author |                  Other body |           Title
+```
+
 ## 项目依赖
 ```xml
 	<parent>
