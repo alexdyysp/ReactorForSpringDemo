@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
-import lombok.experimental.Wither;
 
 /**
  * REST API data format for blog posts.
