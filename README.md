@@ -64,8 +64,7 @@ cqlsh:blogs> select * from blogpost;
 ## 技术覆盖
 - [x] Reactor
 - [x] SpringBoot
-- [x] MySql
-- [x] JPA
+- [x] Cassandra
 
 主要使用了project-reactor项目中的Mono.defer()方法实现多线程查询
 
@@ -73,36 +72,26 @@ cqlsh:blogs> select * from blogpost;
 1.路径传入id查询blog："/api/blog/{id}"
 > Url examole: http://localhost:8080/api/blog/a7eb7a00-d080-11ea-a4e0-ef9074370d3e
 
-2.根据参数id查询blog："/api/blog/string/?id="
-> Url example: http://localhost:8080/api/blog/string/?id=bd3ae648-41ab-42c8-bc9e-4dcd9737f698
-    
-3.传入Mono类型的body："/api/blog"
+2.传入Mono类型的body："/api/blog"
 > Mono型只能代码传入
 ```java
 PostContent postContent = new PostContent("Title", "Author", "Body");
 final UUID id = controller.addPost(Mono.just(postContent)).block();
 ```
 
-4.传入json类型body："/api/blog/json"
+3.传入json类型body："/api/blog/json"
 > {
       "title":"reactortestPost",
       "author":"dyy",
       "body":"second test for api"
   }
 
-5.更新对应id的blog："/api/blog/{id}"
+4.更新对应id的blog："/api/blog/{id}"
 ```java
 PostContent updateContent = new PostContent("Title", "Author2","Other body for update");
 controller.updatePost(id, Mono.just(updateContent)).block();
 final Mono<PostContent> updatedMono = controller.getPost(id);
 ```
-
-6.查询全部blogs数据列表："/api/blog/allblogs"
-> Url examole: http://localhost:8080/api/blog/allblogs
-
-
-7.查询全部blogs的title数据列表："/api/blog/alltitles"
-> Url examole: http://localhost:8080/api/blog/alltitles
 
 
 [reactor]: https://projectreactor.io/
