@@ -1,12 +1,16 @@
 package com.alexdyysp.dao;
 
-import com.alexdyysp.Entity.BLOGPOST;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.UUID;
+
+import com.alexdyysp.Entity.BlogPost;
+import org.springframework.data.repository.CrudRepository;
+
 
 /**
  * Simple Spring Data repository for blog posts.
  *
  * @author dyy
  */
-public interface BlogRepository extends JpaRepository<BLOGPOST, String> {
+
+public interface BlogRepository extends CrudRepository<BlogPost, UUID> {
 }

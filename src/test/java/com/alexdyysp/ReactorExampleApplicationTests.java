@@ -1,9 +1,12 @@
 package com.alexdyysp;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import com.alexdyysp.controller.BlogController;
 import com.alexdyysp.model.PostContent;
+import com.alexdyysp.setup.CassandraSetup;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +23,25 @@ public class ReactorExampleApplicationTests {
     @Autowired
     private BlogController controller;
 
-    @Test
-    public void sanityTests() throws Exception {
-        final Mono<PostContent> nonexistent = controller.getPost(UUID.randomUUID().toString());
-        assertThat(nonexistent.hasElement().block()).isFalse();
-
-        PostContent postContent = new PostContent("Title", "Author", "Body");
-        final String id = controller.addPost(Mono.just(postContent)).block();
-        final Mono<PostContent> contentMono = controller.getPost(id);
-        assertThat(contentMono.block()).isEqualTo(postContent);
-
-        PostContent updateContent = new PostContent("Title", "Author2","Other body for update");
-        controller.updatePost(id, Mono.just(updateContent)).block();
-        final Mono<PostContent> updatedMono = controller.getPost(id);
-        assertThat(updatedMono.block()).isEqualTo(updateContent);
+    @BeforeClass
+    public static void setUpClass() throws IOException {
+        CassandraSetup.init();
     }
 
+    @Test
+    public void sanityTests() throws Exception {
+        final Mono<PostContent> nonexistent = controller.getPost(UUID.randomUUID());
+        assertThat(nonexistent.hasElement().block()).isFalse();
+        final UUID id = controller.addPost(
+                Mono.just(newPostContent())).block();
+        final Mono<PostContent> contentMono = controller.getPost(id);
+        assertThat(contentMono.block()).isEqualTo(newPostContent());
+        controller.updatePost(id, Mono.just(newPostContent().withBody("Other body"))).block();
+        final Mono<PostContent> updatedMono = controller.getPost(id);
+        assertThat(updatedMono.block()).isEqualTo(newPostContent().withBody("Other body"));
+    }
 
+    private static PostContent newPostContent() {
+        return PostContent.builder().title("Title").author("Author").body("Body").build();
+    }
 }
