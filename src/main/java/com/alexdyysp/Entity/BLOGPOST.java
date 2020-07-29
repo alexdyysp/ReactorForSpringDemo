@@ -26,7 +26,4 @@ public class BLOGPOST {
     String author;
 
     String body;
-
-
-
 }
