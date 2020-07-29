@@ -1,7 +1,5 @@
 package com.alexdyysp.controller;
 
-import java.util.UUID;
-
 import com.alexdyysp.model.PostContent;
 import com.alexdyysp.service.BlogService;
 import lombok.AllArgsConstructor;
@@ -24,7 +22,7 @@ public class BlogController {
 
     // 直接传入uuid类型的id
     @GetMapping("/api/blog/{id}")
-    public Mono<PostContent> getPost(@PathVariable final UUID id) {
+    public Mono<PostContent> getPost(@PathVariable final String id) {
         return service.getPost(id);
     }
 
@@ -32,25 +30,24 @@ public class BlogController {
     // http://localhost:8080/api/blog/string/?id=bd3ae648-41ab-42c8-bc9e-4dcd9737f698
     @GetMapping("/api/blog/string/")
     public Mono<PostContent> getPostByStringId(@RequestParam String id) {
-        final UUID uuid = UUID.fromString(id);
-        return service.getPost(uuid);
+        return service.getPost(id);
     }
 
     // 传入Mono类型的body
     @PostMapping("/api/blog")
-    public Mono<UUID> addPost(@RequestBody Mono<PostContent> content) {
+    public Mono<String> addPost(@RequestBody Mono<PostContent> content) {
         return service.addPost(content);
     }
 
     // 传入json类型body
     @PostMapping("/api/blog/json")
-    public Mono<UUID> addPostByJson(@RequestBody PostContent content) {
+    public Mono<String> addPostByJson(@RequestBody PostContent content) {
         return service.addPost(Mono.just(content));
     }
 
     // 更新对应id的blog
     @PutMapping("/api/blog/{id}")
-    public Mono<Void> updatePost(@PathVariable final UUID id, @RequestBody final Mono<PostContent> content) {
+    public Mono<Void> updatePost(@PathVariable final String id, @RequestBody final Mono<PostContent> content) {
         return service.updatePost(id, content);
     }
 }

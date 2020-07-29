@@ -2,7 +2,7 @@ package com.alexdyysp.service;
 
 import java.util.UUID;
 
-import com.alexdyysp.dao.BlogPost;
+import com.alexdyysp.Entity.BLOGPOST;
 import com.alexdyysp.dao.BlogRepository;
 import com.alexdyysp.model.PostContent;
 import lombok.AllArgsConstructor;
@@ -22,23 +22,23 @@ public class BlogService {
 
     private final BlogRepository repository;
 
-    public Mono<PostContent> getPost(final UUID id) {
+    public Mono<PostContent> getPost(final String id) {
         return Mono.defer(() -> Mono.justOrEmpty(repository.findById(id)))
             .subscribeOn(Schedulers.elastic())
             .map(post -> new PostContent(post.getTitle(), post.getAuthor(), post.getBody()));
     }
 
-    public Mono<UUID> addPost(final Mono<PostContent> contentMono) {
+    public Mono<String> addPost(final Mono<PostContent> contentMono) {
         return contentMono
-            .map(content -> new BlogPost(UUID.randomUUID(), content.getTitle(), content.getAuthor(), content.getBody()))
+            .map(content -> new BLOGPOST(UUID.randomUUID().toString(), content.getTitle(), content.getAuthor(), content.getBody()))
             .publishOn(Schedulers.parallel())
             .doOnNext(repository::save)
-            .map(BlogPost::getId);
+            .map(BLOGPOST::getId);
     }
 
-    public Mono<Void> updatePost(final UUID id, final Mono<PostContent> contentMono) {
+    public Mono<Void> updatePost(final String id, final Mono<PostContent> contentMono) {
         return contentMono
-            .map(content -> new BlogPost(id, content.getTitle(), content.getAuthor(), content.getBody()))
+            .map(content -> new BLOGPOST(id, content.getTitle(), content.getAuthor(), content.getBody()))
             .publishOn(Schedulers.parallel())
             .doOnNext(repository::save)
             .then();
