@@ -3,15 +3,17 @@
 ## Basic Data
 
 ```sqlite
-cqlsh:blogs>describe blogpost;
-CREATE TABLE blogs.blogpost (
-    id uuid PRIMARY KEY,
-    author text,
-    body text,
-    title text
-)
+mysql> describe BLOGPOST;
 
-cqlsh:blogs> select * from blogpost;
+CREATE TABLE BLOGPOST(
+    ID varchar(64) NOT NULL COMMENT '唯一指定ID，使用UUID',
+    TITLE TEXT COMMENT '博客标题',
+    AUTHOR varchar(32) COMMENT '作者',
+    BODY TEXT COMMENT '博客内容',
+    PRIMARY KEY (ID))
+);
+
+mysql> select * from BLOGPOST;
 
  id                                   | author  | body                        | title
 --------------------------------------+---------+-----------------------------+-----------------
@@ -19,46 +21,6 @@ cqlsh:blogs> select * from blogpost;
  a7eb7a00-d080-11ea-a4e0-ef9074370d3e |     dyy | first test blog can be read | first test blog
  9350f7f2-0df5-4415-882c-2bfbb87c9b7c | Author2 |       Other body for update |           Title
  bd3ae648-41ab-42c8-bc9e-4dcd9737f698 |  Author |                  Other body |           Title
-```
-
-## 项目依赖
-```xml
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.0.0.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-cassandra</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor.ipc</groupId>
-			<artifactId>reactor-netty</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cassandra</groupId>
-			<artifactId>cassandra-all</artifactId>
-			<version>3.9</version>
-		</dependency>
-	</dependencies>
 ```
 
 ## 技术覆盖
