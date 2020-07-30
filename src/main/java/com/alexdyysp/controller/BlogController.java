@@ -2,14 +2,15 @@ package com.alexdyysp.controller;
 
 import com.alexdyysp.model.PostContent;
 import com.alexdyysp.service.BlogService;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jdk.nashorn.internal.parser.JSONParser;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.xml.ws.Service;
 
 /**
  * REST controller for the blog microservice.
@@ -44,11 +45,10 @@ public class BlogController {
     }
 
     // 全部blogs的title数据列表
-    @GetMapping(value = "/api/blog/alltitles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<String> getPostAllTitles() {
+    @GetMapping(value = "/api/blog/alltitles")
+    public Flux<char[]> getPostAllTitles() {
         return service.getAllTitlesByFlux();
     }
-
 
     // 传入Mono类型的body
     @PostMapping("/api/blog")
