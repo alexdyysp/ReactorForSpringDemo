@@ -12,8 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import javax.annotation.Resource;
-
 /**
  * Service to manage blog posts asynchronously via reactive stream APIs.
  *
@@ -23,7 +21,6 @@ import javax.annotation.Resource;
 @AllArgsConstructor(onConstructor = @__(@Autowired)) // may not be necessary anymore in new versions of spring?
 public class BlogService {
 
-    //@Resource
     private final BlogRepository repository;
 
     public Mono getPost(final String id) {
@@ -65,9 +62,9 @@ public class BlogService {
                 ));
     }
 
-    public Flux<String> getAllTitlesByFlux(){
+    public Flux<char[]> getAllTitlesByFlux(){
         return Flux.fromIterable(repository.findAll())
-                .map(post -> {return post.getTitle();});
+                .map(post -> post.getTitle().toCharArray());
     }
 
 }
