@@ -26,14 +26,14 @@ public class BlogController {
 
     // 路径直接传入id
     // http://localhost:8080/api/blog/bd3ae648-41ab-42c8-bc9e-4dcd9737f698
-    @GetMapping("/api/blog/{id}")
+    @GetMapping("/api/blog{id}")
     public Mono<PostContent> getPost(@PathVariable final String id) {
         return service.getPost(id);
     }
 
     // 传入string类型的id
     // http://localhost:8080/api/blog/string/?id=bd3ae648-41ab-42c8-bc9e-4dcd9737f698
-    @GetMapping("/api/blog/string/")
+    @GetMapping("/api/blog/")
     public Mono<PostContent> getPostByStringId(@RequestParam String id) {
         return service.getPost(id);
     }
@@ -63,8 +63,8 @@ public class BlogController {
     }
 
     // 更新对应id的blog
-    @PutMapping("/api/blog/{id}")
-    public Mono<Void> updatePost(@PathVariable final String id, @RequestBody final Mono<PostContent> content) {
+    @PutMapping("/api/blog/update")
+    public Mono<Void> updatePost(@RequestParam final String id, @RequestBody final Mono<PostContent> content) {
         return service.updatePost(id, content);
     }
 }
